@@ -1,18 +1,18 @@
 #include "Deleste.h"
 #include "ChangeTempo.h"
 
-Deleste::Deleste():
+Deleste::Deleste() :
 	m_music(SoundAsset(L"none"))
 {
 	for (size_t i = 0; i < 200; ++i) {
-		getMeasures().push_back(std::make_shared<Measure>());
+		m_measures.push_back(std::make_shared<Measure>());
 	}
 }
 
-Deleste::Deleste(String path):
+Deleste::Deleste(String path) :
 	m_music(SoundAsset(L"none"))
 {
-
+	m_savePath = path;
 	LOG(L"譜面の読み込みを開始します。");
 
 	TextReader reader(path);
@@ -49,55 +49,54 @@ Deleste::Deleste(String path):
 			}
 
 			if (tag == L"TITLE") {
-				Title = args[0];
+				m_header.Title = args[0];
 			}
 			else if (tag == L"LYRICIST") {
-				Lyricist = args[0];
+				m_header.Lyricist = args[0];
 			}
 			else if (tag == L"COMPOSER") {
-				Composer = args[0];
+				m_header.Composer = args[0];
 			}
 			else if (tag == L"BEATMAPPER" || tag == L"MAPPER" || tag == L"AUTHOR") {
-				Mapper = args[0];
+				m_header.Mapper = args[0];
 			}
 			else if (tag == L"TEMPO" || tag == L"BPM") {
-				Bpm = Parse<double>(args[0]);
+				m_header.Bpm = args[0];
 			}
 			else if (tag == L"LEVEL" || tag == L"LV") {
-				Level = Parse<int>(args[0]);
+				m_header.Level = args[0];
 			}
 			else if (tag == L"DIFFICULTY" || tag == L"DIFFICULT") {
-				Difficulty = args[0];
+				m_header.Difficulty = args[0];
 			}
 			else if (tag == L"OFFSET") {
-				Offset = Parse<int>(args[0]);
+				m_header.Offset = args[0];
 			}
 			else if (tag == L"SONGOFFSET" || tag == L"MUSICOFFSET" || tag == L"BGMOFFSET") {
-				SongOffset = Parse<int>(args[0]);
+				m_header.SongOffset = args[0];
 			}
 			else if (tag == L"MOVOFFSET" || tag == L"MOVIEOFFSET") {
-				MovieOffset = Parse<int>(args[0]);
+				m_header.MovieOffset = args[0];
 			}
 			else if (tag == L"SONG" || tag == L"MUSIC" || tag == L"BGM") {
-				Song = args[0];
-				const String fullPath = FileSystem::ParentPath(path) + Song;
-				if (!FileSystem::Exists(fullPath)) {
-					error(Format(L"[Error] {}行目: 音源が見つかりません。[{}]"_fmt, lineNumber, Song));
+				m_header.Song = args[0];
+				const String fullPath = FileSystem::ParentPath(path) + m_header.Song;
+				if (!FileSystem::IsFile(fullPath)) {
+					error(Format(L"[Error] {}行目: 音源が見つかりません。[{}]"_fmt, lineNumber, m_header.Song));
 					continue;
 				}
-				m_music = Sound(fullPath);
 			}
 			else if (tag == L"LYRICS" || tag == L"LYRIC") {
-				Lyrics = args[0];
+				m_header.Lyrics = args[0];
 			}
 			else if (tag == L"BACKGROUND" || tag == L"BACK" || tag == L"BG") {
-				Background = args[0];
+				m_header.Background = args[0];
 			}
 			else if (tag == L"SONGVOLUME" || tag == L"SONGVOL" || tag == L"MUSICVOLUME" || tag == L"MUSICVOL" || tag == L"BGMVOLUME" || tag == L"BGMVOL") {
-				SongVolume = Parse<int>(args[0]);
+				m_header.SongVolume = args[0];
 			}
 			else if (tag == L"SEVOLUME" || tag == L"SEVOL") {
-				SEVolume = Parse<int>(args[0]);
+				m_header.SEVolume = args[0];
 			}
 			else if (tag == L"MEASURE" || tag == L"MEAS" || tag == L"MEA") {
 				double measure = Parse<double>(args[0]);
@@ -135,10 +134,10 @@ Deleste::Deleste(String path):
 				m_measures[static_cast<size_t>(Floor(measure))]->getNotes().push_back(std::make_shared<ChangeTempo>(static_cast<int>(Fraction(measure) * 768), tempo));
 			}
 			else if (tag == L"ATTRIBUTE") {
-				Attibute = args[0];
+				m_header.Attibute = args[0];
 			}
 			else if (tag == L"BRIGHTNESS" || tag == L"BRIGHT") {
-				Brightness = Parse<int>(args[0]);
+				m_header.Brightness = args[0];
 			}
 			else {
 				error(Format(L"[Error] {}行目: 非対応のタグです。[{}]"_fmt, lineNumber, tag));
@@ -174,6 +173,13 @@ Deleste::Deleste(String path):
 		}
 	}
 
+	updateMusic();
+	updateHeader();
+
+	if (m_measures.size() == 0) {
+		m_measures.push_back(std::make_shared<Measure>());
+	}
+
 	Measure::updateMeasureState(m_measures);
 
 	for (auto& measure : m_measures) {
@@ -201,17 +207,25 @@ void Deleste::save(const String& path) {
 	m_savePath = path;
 	TextWriter writer(path);
 
-	if (!Title.isEmpty) writer.writeln(L"#Title ", Title);
-	if (!Lyricist.isEmpty) writer.writeln(L"#Lyricist ", Lyricist);
-	if (!Composer.isEmpty) writer.writeln(L"#Composer ", Composer);
-	if (!Mapper.isEmpty) writer.writeln(L"#Mapper ", Mapper);
-	if (!Background.isEmpty) writer.writeln(L"#Background ", Background);
-	if (!Song.isEmpty) writer.writeln(L"#Song ", Song);
-	if (!Lyrics.isEmpty) writer.writeln(L"#Lyrics ", Lyrics);
-	/*
-	if (!Lyricist.isEmpty) writer.writeln(L"#Lyricist ", Lyricist);
-	if (!Lyricist.isEmpty) writer.writeln(L"#Lyricist ", Lyricist);
-	if (!Lyricist.isEmpty) writer.writeln(L"#Lyricist ", Lyricist);*/
+	if (!m_header.Title.isEmpty) writer.writeln(L"#Title ", m_header.Title);
+	if (!m_header.Lyricist.isEmpty) writer.writeln(L"#Lyricist ", m_header.Lyricist);
+	if (!m_header.Composer.isEmpty) writer.writeln(L"#Composer ", m_header.Composer);
+	if (!m_header.Mapper.isEmpty) writer.writeln(L"#Mapper ", m_header.Mapper);
+	if (!m_header.Background.isEmpty) writer.writeln(L"#Background ", m_header.Background);
+	if (!m_header.Song.isEmpty) writer.writeln(L"#Song ", m_header.Song);
+	if (!m_header.Lyrics.isEmpty) writer.writeln(L"#Lyrics ", m_header.Lyrics);
+	if (!m_header.Bpm.isEmpty) writer.writeln(L"#Bpm ", m_header.Bpm);
+	if (!m_header.Offset.isEmpty) writer.writeln(L"#Offset ", m_header.Offset);
+	if (!m_header.SongOffset.isEmpty) writer.writeln(L"#SongOffset ", m_header.SongOffset);
+	if (!m_header.MovieOffset.isEmpty) writer.writeln(L"#MovieOffset ", m_header.MovieOffset);
+	if (!m_header.Difficulty.isEmpty) writer.writeln(L"#Difficulty ", m_header.Difficulty);
+	if (!m_header.Level.isEmpty) writer.writeln(L"#Level ", m_header.Level);
+	if (!m_header.SongVolume.isEmpty) writer.writeln(L"#SongVolume ", m_header.SongVolume);
+	if (!m_header.SEVolume.isEmpty) writer.writeln(L"#SEVolume ", m_header.SEVolume);
+	if (!m_header.Attibute.isEmpty) writer.writeln(L"#Attibute ", m_header.Attibute);
+	if (!m_header.Brightness.isEmpty) writer.writeln(L"#Brightness ", m_header.Brightness);
+
+	writer.writeln();
 
 	for (size_t i = 0; i < m_measures.size(); ++i) {
 		if (m_measures[i]->Rhythm != nullptr) {
@@ -230,7 +244,7 @@ void Deleste::save(const String& path) {
 		for (auto& note : m_measures[i]->getNotes()) {
 			if (typeid(*note) == typeid(PlayableNote)) {
 				auto playableNote = std::dynamic_pointer_cast<PlayableNote>(note);
-				
+
 				auto insertLine = std::find_if(lines.begin(), lines.end(), [&](std::shared_ptr<DelesteLine>& x) {
 					return x->getChannel() == playableNote->Channel
 						&& x->getNotes().end() == std::find_if(x->getNotes().begin(), x->getNotes().end(), [&](std::shared_ptr<PlayableNote>& y) {return y->Tick == playableNote->Tick; });
@@ -245,10 +259,48 @@ void Deleste::save(const String& path) {
 		}
 
 		for (auto& line : lines) {
-			LOG(line->toString());
 			writer.writeln(line->toString());
 		}
 	}
+}
+
+double Deleste::getOffset() {
+	return m_offset - m_songOffset;
+}
+
+double Deleste::getTempo() {
+	return m_tempo;
+}
+
+DelesteHeader&  Deleste::getHeader() {
+	return m_header;
+}
+
+void Deleste::updateMusic() {
+	String fullPath = FileSystem::ParentPath(m_savePath) + m_header.Song;
+	if (FileSystem::IsFile(fullPath)) {
+		m_music = Sound(fullPath);
+	}
+	else {
+		m_music = SoundAsset(L"none");
+	}
+}
+
+void Deleste::updateHeader() {
+	m_tempo = m_header.Bpm.isEmpty ? 120 : Parse<double>(m_header.Bpm);
+	m_offset = m_header.Offset.isEmpty ? 0 : Parse<int>(m_header.Offset) / 1000.0;
+	m_songOffset = m_header.SongOffset.isEmpty ? 0 : Parse<int>(m_header.SongOffset) / 1000.0;
+	m_songVolume = m_header.SongVolume.isEmpty ? 1.0 : Parse<int>(m_header.SongVolume) / 100.0;
+	m_seVolume = m_header.SEVolume.isEmpty ? 1.0 : Parse<int>(m_header.SEVolume) / 100.0;
+	m_music.setVolume(m_songVolume);
+}
+
+double Deleste::getSongVolume() {
+	return m_songVolume;
+}
+
+double Deleste::getSEVolume() {
+	return m_seVolume;
 }
 
 void Deleste::existMeasureCheck(size_t measure) {

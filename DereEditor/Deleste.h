@@ -33,6 +33,26 @@ public:
 	const String toString();
 };
 
+struct DelesteHeader {
+	String Title;
+	String Lyricist;
+	String Composer;
+	String Mapper;
+	String Background;
+	String Song;
+	String Lyrics;
+	String Bpm;
+	String Offset;
+	String SongOffset;
+	String MovieOffset;
+	String Difficulty;
+	String Level;
+	String SongVolume;
+	String SEVolume;
+	String Attibute;
+	String Brightness;
+};
+
 class Deleste
 {
 private:
@@ -40,6 +60,12 @@ private:
 	std::vector<String> m_errorMessages;
 	String m_savePath;
 	Sound m_music;
+	DelesteHeader m_header;
+	double m_tempo = 120.0;
+	double m_offset = 0.0;
+	double m_songOffset = 0.0;
+	double m_songVolume = 1.0;
+	double m_seVolume = 1.0;
 
 
 	static void rationalize(double value, int *numer, int *denom) {
@@ -70,23 +96,12 @@ public:
 	void error(const String &message);
 	const String& getSavePath();
 	const Sound& getMusic();
-
-	String Title;
-	String Lyricist;
-	String Composer;
-	String Mapper;
-	String Background;
-	String Song;
-	String Lyrics;
-	double Bpm = 120;
-	int Offset = 0;
-	int SongOffset = 0;
-	int MovieOffset = 0;
-	String Difficulty = L"Master";
-	int Level = 26;
-	int SongVolume = 100;
-	int SEVolume = 100;
-	String Attibute = L"All";
-	int Brightness = 255;
+	double getOffset();
+	double getTempo();
+	double getSongVolume();
+	double getSEVolume();
+	void updateHeader();
+	DelesteHeader& getHeader();
+	void updateMusic();
 };
 
