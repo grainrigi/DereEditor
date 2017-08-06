@@ -51,7 +51,7 @@
 
 // App Resource
 100		ICON	"Icon.ico"
-101		FILE	"Engine/Splash.png"
+//101		FILE	"Engine/Splash.png"
 2000	FILE	"Resources/notes.png"	
 2001	FILE	"Resources/icons.png"
 3000	FILE	"Resources/tap.ogg"
