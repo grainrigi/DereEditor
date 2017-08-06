@@ -5,12 +5,31 @@
 class PlayableNote :public Note {
 private:
 	NoteType m_type;
+	double m_delesteCharPos;
 
 public:
-	PlayableNote(int tick, int lane, NoteType type);
+	std::shared_ptr<PlayableNote> PlevNote = nullptr;
+	std::shared_ptr<PlayableNote> NextNote = nullptr;
+	int Channel;
+	int StartPos;
+	int FinishPos;
+	bool IsJudged = false;
+
+	PlayableNote(int tick, int startPos, int finishPos, int channel, NoteType type);
+	PlayableNote(double charPos, int startPos, int finishPos, int channel, NoteType type);
 
 	PlayableNote() = default;
 	~PlayableNote() = default;
 
 	virtual void draw() const;
+
+	void drawRibbon() const;
+
+	void drawInfo() const;
+
+	NoteType getNoteType();
+
+	void setStartPos(int lane);
+
+	double getDelesteCharPos();
 };

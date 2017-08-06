@@ -7,9 +7,11 @@ private:
 public:
 	ChangeTempo(int tick, double tempo);
 
+	ChangeTempo() = default;
 	~ChangeTempo() = default;
 
 	virtual void draw() const;
 
 	double getTempo();
+	double getY();
 };

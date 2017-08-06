@@ -1,11 +1,10 @@
 #pragma once
 #include "Note.h"
+#include "Rhythm.h"
 
 class Measure {
 private:
 	double m_length = 1.0;
-	int m_numer = 4;
-	int m_denom = 4;
 	std::vector<std::shared_ptr<Note>> m_notes;
 public:
 
@@ -15,14 +14,27 @@ public:
 	double BeginY;
 	double EndY;
 	double LastLineY;
+	std::shared_ptr<Rhythm> Rhythm = nullptr;
 
 	std::vector<std::shared_ptr<Note>>& getNotes();
 
-	double getRealTick();
+	int getLengthTick();
 
 	double getLength();
 
 	void setLength(double length);
 
-	void setLength(int numer, int denom);
+	/*
+	DelesteŒ`®‚ğ“Ç‚İ‚ñ‚¾ê‡•K‚¸ŒÄ‚Ô
+	*/
+	void culcTick();
+
+	static void updateMeasureState(std::vector<std::shared_ptr<Measure>> &measures) {
+		double currentLength = 1.0;
+		for (auto& measure : measures) {
+			if (measure->Rhythm != nullptr)
+				currentLength = measure->Rhythm->getLength();
+			measure->setLength(currentLength);
+		}
+	}
 };

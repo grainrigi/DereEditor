@@ -1,13 +1,64 @@
 #include "PlayableNote.h"
 
 
-PlayableNote::PlayableNote(int tick, int lane, NoteType type) :
-	Note(tick, lane)
+PlayableNote::PlayableNote(int tick, int startPos, int finishPos, int channel, NoteType type) :
+	Note(tick)
 {
 	m_type = type;
+	Channel = channel;
+	StartPos = startPos;
+	FinishPos = finishPos;
+}
+
+PlayableNote::PlayableNote(double charPos, int startPos, int finishPos, int channel, NoteType type) :
+	Note()
+{
+	m_delesteCharPos = charPos;
+	m_type = type;
+	Channel = channel;
+	StartPos = startPos;
+	FinishPos = finishPos;
 }
 
 void PlayableNote::draw() const {
-	//NoteType::Slide < m_type ? Point(48 * static_cast<int>(m_type), 0) : Point(60 * (static_cast<int>(m_type) - 2), 48)
-	TextureAsset(L"notes")(0, 0, 48, 48).drawAt(m_position);
+	switch (m_type)
+	{
+	case NoteType::Tap:
+		TextureAsset(L"notes")(0, 0, 48, 48).drawAt(m_position);
+		break;
+	case NoteType::Long:
+		TextureAsset(L"notes")(48, 0, 48, 48).drawAt(m_position);
+		break;
+	case NoteType::Slide:
+		TextureAsset(L"notes")(96, 0, 48, 48).drawAt(m_position);
+		break;
+	case NoteType::LFlick:
+		TextureAsset(L"notes")(0, 48, 60, 48).drawAt(m_position);
+		break;
+	case NoteType::RFlick:
+		TextureAsset(L"notes")(60, 48, 60, 48).drawAt(m_position);
+		break;
+	}
+}
+
+void PlayableNote::drawInfo() const {
+	FontAsset(L"editor")(StartPos + 1).drawAt(m_position, Palette::Black);
+	FontAsset(L"editor")(Channel).drawAt(m_position-Point(25,25), Palette::Red);
+}
+
+void PlayableNote::drawRibbon() const {
+	if (NextNote != nullptr)
+		Line(m_position, NextNote->m_position).draw(30, Color(210, 255, 255));
+}
+
+NoteType PlayableNote::getNoteType() {
+	return m_type;
+}
+
+void PlayableNote::setStartPos(int lane) {
+	StartPos = lane;
+}
+
+double PlayableNote::getDelesteCharPos() {
+	return m_delesteCharPos;
 }
