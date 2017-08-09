@@ -421,7 +421,7 @@ void Editor::editHeader() {
 	m_headerGui.textField(L"level").setText(m_deleste.getHeader().Level);
 	m_headerGui.textField(L"song-volume").setText(m_deleste.getHeader().SongVolume);
 	m_headerGui.textField(L"se-volume").setText(m_deleste.getHeader().SEVolume);
-	m_headerGui.textField(L"attibute").setText(m_deleste.getHeader().Attibute);
+	m_headerGui.textField(L"attribute").setText(m_deleste.getHeader().Attribute);
 	m_headerGui.textField(L"brightness").setText(m_deleste.getHeader().Brightness);
 
 	m_gui.show(false);
@@ -451,7 +451,7 @@ void Editor::saveHeader() {
 	m_deleste.getHeader().Level = m_headerGui.textField(L"level").text;
 	m_deleste.getHeader().SongVolume = m_headerGui.textField(L"song-volume").text;
 	m_deleste.getHeader().SEVolume = m_headerGui.textField(L"se-volume").text;
-	m_deleste.getHeader().Attibute = m_headerGui.textField(L"attibute").text;
+	m_deleste.getHeader().Attribute = m_headerGui.textField(L"attribute").text;
 	m_deleste.getHeader().Brightness = m_headerGui.textField(L"brightness").text;
 	m_deleste.updateHeader();
 	updateNoteState();
@@ -530,8 +530,8 @@ Editor::Editor() :
 		m_headerGui.addln(L"song-volume", GUITextField::Create(none, textFieldStyle));
 		m_headerGui.add(GUIText::Create(L"SEVolume", labelStyle));
 		m_headerGui.addln(L"se-volume", GUITextField::Create(none, textFieldStyle));
-		m_headerGui.add(GUIText::Create(L"Attibute", labelStyle));
-		m_headerGui.addln(L"attibute", GUITextField::Create(none, textFieldStyle));
+		m_headerGui.add(GUIText::Create(L"Attribute", labelStyle));
+		m_headerGui.addln(L"attribute", GUITextField::Create(none, textFieldStyle));
 		m_headerGui.add(GUIText::Create(L"Brightness", labelStyle));
 		m_headerGui.addln(L"brightness", GUITextField::Create(none, textFieldStyle));
 

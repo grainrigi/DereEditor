@@ -134,7 +134,7 @@ Deleste::Deleste(String path) :
 				m_measures[static_cast<size_t>(Floor(measure))]->getNotes().push_back(std::make_shared<ChangeTempo>(static_cast<int>(Fraction(measure) * 768), tempo));
 			}
 			else if (tag == L"ATTRIBUTE") {
-				m_header.Attibute = args[0];
+				m_header.Attribute = args[0];
 			}
 			else if (tag == L"BRIGHTNESS" || tag == L"BRIGHT") {
 				m_header.Brightness = args[0];
@@ -222,7 +222,7 @@ void Deleste::save(const String& path) {
 	if (!m_header.Level.isEmpty) writer.writeln(L"#Level ", m_header.Level);
 	if (!m_header.SongVolume.isEmpty) writer.writeln(L"#SongVolume ", m_header.SongVolume);
 	if (!m_header.SEVolume.isEmpty) writer.writeln(L"#SEVolume ", m_header.SEVolume);
-	if (!m_header.Attibute.isEmpty) writer.writeln(L"#Attibute ", m_header.Attibute);
+	if (!m_header.Attribute.isEmpty) writer.writeln(L"#Attribute ", m_header.Attribute);
 	if (!m_header.Brightness.isEmpty) writer.writeln(L"#Brightness ", m_header.Brightness);
 
 	writer.writeln();
