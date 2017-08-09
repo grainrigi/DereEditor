@@ -49,7 +49,7 @@ struct DelesteHeader {
 	String Level;
 	String SongVolume;
 	String SEVolume;
-	String Attibute;
+	String Attribute;
 	String Brightness;
 };
 
