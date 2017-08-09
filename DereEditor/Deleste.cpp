@@ -18,6 +18,9 @@ Deleste::Deleste(String path) :
 	TextReader reader(path);
 	String line;
 	int lineNumber = 0;
+
+	existMeasureCheck(199);
+
 	while (reader.readLine(line))
 	{
 		++lineNumber;
@@ -175,10 +178,6 @@ Deleste::Deleste(String path) :
 
 	updateMusic();
 	updateHeader();
-
-	if (m_measures.size() == 0) {
-		m_measures.push_back(std::make_shared<Measure>());
-	}
 
 	Measure::updateMeasureState(m_measures);
 
