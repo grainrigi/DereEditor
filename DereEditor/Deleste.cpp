@@ -342,7 +342,7 @@ const String DelesteLine::toString() {
 	String notes;
 	String startPos;
 	String finishPos;
-	int charPerTick = 768;
+	int charPerTick = m_lengthTick;
 
 	for (auto& note : m_notes) {
 		charPerTick = Util::gcd(note->Tick, charPerTick);
