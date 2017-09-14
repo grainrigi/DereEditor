@@ -24,3 +24,8 @@
 #define LOCALE_REG_END() \
 	};
 #endif
+
+namespace Locale
+{
+	typedef std::unordered_map<Str_, uint32_t> LocaleStringDictionary;
+}

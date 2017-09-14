@@ -7,8 +7,6 @@
 
 namespace Locale
 {
-	typedef std::unordered_map<Str_, uint32_t> LocaleStringDictionary;
-
 	//Register the string id
 	LOCALE_REG_START()
 	LOCALE_REG(UI_BUTTON_OK, 1)
