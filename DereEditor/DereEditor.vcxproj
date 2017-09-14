@@ -166,14 +166,14 @@
     <ClCompile Include="Deleste.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="GUITextureButton.cpp" />
-    <ClCompile Include="Locale.cpp" />
-    <ClCompile Include="LocaleTable.cpp" />
+    <ClCompile Include="locale\Locale.cpp" />
+    <ClCompile Include="locale\LocaleTable.cpp" />
+    <ClCompile Include="locale\StringUtil.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Measure.cpp" />
     <ClCompile Include="Note.cpp" />
     <ClCompile Include="PlayableNote.cpp" />
     <ClCompile Include="Rhythm.cpp" />
-    <ClCompile Include="StringUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />
@@ -292,14 +292,14 @@
     <ClInclude Include="Deleste.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="GUITextureButton.h" />
-    <ClInclude Include="Locale.h" />
-    <ClInclude Include="LocaleTable.h" />
-    <ClInclude Include="LocaleTableHead.h" />
+    <ClInclude Include="locale\Locale.h" />
+    <ClInclude Include="locale\LocaleTable.h" />
+    <ClInclude Include="locale\LocaleTableHead.h" />
+    <ClInclude Include="locale\StringUtil.h" />
     <ClInclude Include="Measure.h" />
     <ClInclude Include="Note.h" />
     <ClInclude Include="PlayableNote.h" />
     <ClInclude Include="Rhythm.h" />
-    <ClInclude Include="StringUtil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
