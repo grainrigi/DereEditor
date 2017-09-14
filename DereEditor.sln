@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DereEditor", "DereEditor\DereEditor.vcxproj", "{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{D5345939-3E4A-492A-A4D3-3AB02756301A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A} = {9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
