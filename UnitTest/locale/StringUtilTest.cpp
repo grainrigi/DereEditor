@@ -1,7 +1,6 @@
-#include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "DereEditor/StringUtil.h"
+#include "DereEditor/locale/StringUtil.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace StringUtil;

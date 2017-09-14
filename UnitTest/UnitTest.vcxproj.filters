@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\locale">
+      <UniqueIdentifier>{db5e0661-be74-472f-bbe5-02f9b2ac5220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\locale">
+      <UniqueIdentifier>{fae4d378-3ee4-44c1-bde0-70c97b9d65c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -21,28 +27,28 @@
     <ClInclude Include="targetver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="LocaleTable.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="locale\LocaleTable.h">
+      <Filter>ヘッダー ファイル\locale</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="LocaleTest.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="locale\LocaleTable.cpp">
+      <Filter>ソース ファイル\locale</Filter>
     </ClCompile>
-    <ClCompile Include="LocaleTable.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="locale\LocaleTest.cpp">
+      <Filter>ソース ファイル\locale</Filter>
     </ClCompile>
-    <ClCompile Include="..\DereEditor\Locale.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="locale\StringUtilTest.cpp">
+      <Filter>ソース ファイル\locale</Filter>
     </ClCompile>
-    <ClCompile Include="StringUtilTest.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="..\DereEditor\locale\Locale.cpp">
+      <Filter>ソース ファイル\locale</Filter>
     </ClCompile>
-    <ClCompile Include="..\DereEditor\StringUtil.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="..\DereEditor\locale\StringUtil.cpp">
+      <Filter>ソース ファイル\locale</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

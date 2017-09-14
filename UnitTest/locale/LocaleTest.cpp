@@ -1,7 +1,6 @@
-﻿#include "stdafx.h"
-#include "CppUnitTest.h"
+﻿#include "CppUnitTest.h"
 
-#include "DereEditor/Locale.h"
+#include "DereEditor/locale/Locale.h"
 #include "LocaleTable.h"
 #include <memory>
 

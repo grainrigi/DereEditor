@@ -1,7 +1,7 @@
 #pragma once
 
-#include <DereEditor/Locale.h>
-#include <DereEditor/LocaleTableHead.h>
+#include <DereEditor/locale/Locale.h>
+#include <DereEditor/locale/LocaleTableHead.h>
 
 namespace Locale
 {
