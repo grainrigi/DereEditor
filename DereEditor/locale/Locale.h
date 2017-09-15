@@ -112,5 +112,13 @@ namespace Locale {
 	public:
 		LocaleNotFoundException(const std::string &);
 	};
+
+	/* free functions */
+
+	//Get the string id from string name
+	uint32_t getStringID(const Str_ &key);
+
+	//Get the number of strings
+	int getRequiredEntryCount(void);
 }
 
