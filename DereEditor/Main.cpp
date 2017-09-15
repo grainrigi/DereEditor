@@ -1,5 +1,36 @@
 ﻿# include <Siv3D.hpp>
 # include "Editor.h"
+# include "locale/Locale.h"
+
+namespace
+{
+	bool prepareLocale(const String &filename)
+	{
+		auto &locman = Locale::LocaleManager::instance();
+
+		//Load specified locale file
+		TextReader r(filename);
+
+		if (!r.isOpened())
+		{
+			MessageBox::Show(L"locale file could not be loaded.");
+			return false;
+		}
+
+		try {
+			locman.LoadLocaleFromString(r.readAll().str());
+		}
+		catch(Locale::LocaleException ex)
+		{
+			MessageBox::Show(L"LocaleException : " + Widen(ex.what()));
+			return false;
+		}
+
+		r.close();
+
+		return true;
+	}
+}
 
 void Main()
 {
@@ -19,6 +50,10 @@ void Main()
 
 	//コンフィグロード
 	INIReader config(L"config.ini");
+
+	//ロケール準備
+	if (!prepareLocale(config.get<String>(L"Locale.localefile")))
+		return;
 
 	Editor editor;
 	editor.setDelesteSimulatorPath(config.get<String>(L"SimulatorPath.deleste"));
