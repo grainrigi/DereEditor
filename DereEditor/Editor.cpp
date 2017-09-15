@@ -1,6 +1,8 @@
-#include "Editor.h"
+ï»¿#include "Editor.h"
 #include "GUITextureButton.h"
 #include "Deleste.h"
+#include "locale/Locale.h"
+#include "locale/LocaleTable.h"
 
 void Editor::updateNoteState() {
 	m_playableNotes.clear();
@@ -87,7 +89,7 @@ double Editor::getBeatPerHeight() {
 	return m_zoom * m_beatPerHeight;
 }
 
-//TODO:‰Â•ÏƒEƒBƒ“ƒhƒEƒTƒCƒY‘Î‰
+//TODO:å¯å¤‰ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºå¯¾å¿œ
 
 int Editor::getLaneOffset() {
 	return m_LaneOffset;
@@ -154,7 +156,7 @@ void Editor::changeZoomRatio() {
 void Editor::addMeasure() {
 	if (getMeasures().size() == MEASURE_MAX) {
 		pauseMusic();
-		MessageBox::Show(L"‚±‚êˆÈã¬ß‚ğ’Ç‰Áo—ˆ‚Ü‚¹‚ñB");
+		MessageBox::Show(Locale::GetString(Locale::ERR_MEASURE_CANNOT_ADD));
 		return;
 	}
 
@@ -167,13 +169,13 @@ void Editor::addMeasure() {
 void Editor::removeMeasure() {
 	if (getMeasures().size() == MEASURE_MIN) {
 		pauseMusic();
-		MessageBox::Show(L"¬ß‚ğ‘S‚Äíœ‚·‚é‚±‚Æ‚Ío—ˆ‚Ü‚¹‚ñB");
+		MessageBox::Show(Locale::GetString(Locale::ERR_MEASURE_CANNOT_DEL_ALL));
 		return;
 	}
 
 	if (getMeasures()[m_selectedMeasure]->getNotes().size() > 0) {
 		pauseMusic();
-		if (MessageBox::Show(L"ƒm[ƒg‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚·B¬ß‚ğíœ‚µ‚Ü‚·‚©H", MessageBoxStyle::YesNo) == MessageBoxCommand::Yes) {
+		if (MessageBox::Show(Locale::GetString(Locale::MSG_DEL_MEASURE_CONFIRM), MessageBoxStyle::YesNo) == MessageBoxCommand::Yes) {
 			getMeasures().erase(getMeasures().begin() + m_selectedMeasure);
 			if (getMeasures().size() == m_selectedMeasure) {
 				--m_selectedMeasure;
@@ -196,7 +198,7 @@ void Editor::setMeasureRhythm() {
 	String str = m_gui.textField(L"measure-rhythm").text;
 	if (str.indexOf(L"/") == String::npos) {
 		pauseMusic();
-		MessageBox::Show(L"4/4Œ`®‚Å“ü—Í‚µ‚Ä‚­‚¾‚³‚¢");
+		MessageBox::Show(Locale::GetString(Locale::ERR_ILLFORM_4_4));
 		return;
 	}
 	auto nums = str.split(L'/');
@@ -204,12 +206,12 @@ void Editor::setMeasureRhythm() {
 	int denom = Parse<int>(nums[1]);
 	if (numer <= 0 || denom <= 0) {
 		pauseMusic();
-		MessageBox::Show(L"¬ß‚Ì’·‚³‚Í0ˆÈ‰º‚Éİ’èo—ˆ‚Ü‚¹‚ñB");
+		MessageBox::Show(Locale::GetString(Locale::ERR_MEASURE_SIZE_BELOW_0));
 		return;
 	}
 	else if (denom != 4 && denom != 8 && denom != 16 && denom != 32 && denom != 64) {
 		pauseMusic();
-		MessageBox::Show(L"•ª•ê‚Í4,8,16,32,64‚Ì‚İ‚ªg—po—ˆ‚Ü‚·B");
+		MessageBox::Show(Locale::GetString(Locale::ERR_DENOM_LIMITATION));
 		return;
 	}
 	getMeasures()[m_selectedMeasure]->Rhythm = std::make_shared<Rhythm>(numer, denom);
@@ -294,11 +296,11 @@ std::vector<std::shared_ptr<Measure>>& Editor::getMeasures() {
 }
 
 void Editor::addLane() {
-	//TODO:ƒŒ[ƒ“íœ
+	//TODO:ãƒ¬ãƒ¼ãƒ³å‰Šé™¤
 }
 
 void Editor::removeLane() {
-	//TODO:ƒŒ[ƒ“’Ç‰Á
+	//TODO:ãƒ¬ãƒ¼ãƒ³è¿½åŠ 
 }
 
 void Editor::divisionUp() {
@@ -334,7 +336,7 @@ void Editor::changeBeatmap(const Deleste& beatmap) {
 void Editor::newFile() {
 	if (m_stateChanged) {
 		pauseMusic();
-		auto result = MessageBox::Show(L"•ˆ–Ê‚ª•ÏX‚³‚ê‚Ä‚¢‚Ü‚·B•Û‘¶‚µ‚Ü‚·‚©H", MessageBoxStyle::YesNoCancel);
+		auto result = MessageBox::Show(Locale::GetString(Locale::MSG_SAVE_CONFIRM), MessageBoxStyle::YesNoCancel);
 		if (result == MessageBoxCommand::Yes) {
 			saveFile();
 			resetBeatmap();
@@ -353,7 +355,7 @@ void Editor::newFile() {
 
 void Editor::openFile() {
 	pauseMusic();
-	if (const auto open = Dialog::GetOpen({ { L"Deleste ƒtƒ@ƒCƒ‹ (*.txt)",L"*.txt" } }))
+	if (const auto open = Dialog::GetOpen({ { Locale::GetString(Locale::MSG_OPENFILE_DELESTE_FILTER),L"*.txt" } }))
 	{
 		Deleste beatmap(open.value());
 		if (beatmap.hasError()) {
@@ -362,14 +364,14 @@ void Editor::openFile() {
 				for (auto it = beatmap.getErrorMessages().begin(); it != beatmap.getErrorMessages().begin() + 20; ++it) {
 					message.append(*it + L"\n");
 				}
-				message.append(L"(21ŒÂˆÈã‚ÌƒGƒ‰[‚ÍÈ—ª‚µ‚Ä‚¢‚Ü‚·B)\n");
+				message.append(L"(21å€‹ä»¥ä¸Šã®ã‚¨ãƒ©ãƒ¼ã¯çœç•¥ã—ã¦ã„ã¾ã™ã€‚)\n");
 			}
 			else {
 				for (auto& mes : beatmap.getErrorMessages()) {
 					message.append(mes + L"\n");
 				}
 			}
-			message.append(L"ƒGƒ‰[‚ğ–³‹‚µ‚Ä“Ç‚İ‚İ‚Ü‚·‚©H");
+			message.append(L"ã‚¨ãƒ©ãƒ¼ã‚’ç„¡è¦–ã—ã¦èª­ã¿è¾¼ã¿ã¾ã™ã‹ï¼Ÿ");
 			if (MessageBox::Show(message, MessageBoxStyle::YesNo) == MessageBoxCommand::Yes) {
 				changeBeatmap(beatmap);
 			}
@@ -395,7 +397,7 @@ void Editor::saveFile() {
 
 void Editor::saveAsFile() {
 	pauseMusic();
-	if (const auto save = Dialog::GetSave({ { L"Deleste ƒtƒ@ƒCƒ‹ (*.txt)",L"*.txt" } }))
+	if (const auto save = Dialog::GetSave({ { Locale::GetString(Locale::MSG_OPENFILE_DELESTE_FILTER),L"*.txt" } }))
 	{
 		m_deleste.save(save.value());
 		m_deleste.updateMusic();
@@ -478,7 +480,7 @@ void Editor::pauseMusic() {
 void Editor::runSimulator() {
 	pauseMusic();
 	if (!FileSystem::IsFile(m_delesteSimulatorPath)) {
-		MessageBox::Show(L"ƒVƒ~ƒ…ƒŒ[ƒ^[‚ª‘¶İ‚µ‚Ü‚¹‚ñB");
+		MessageBox::Show(Locale::GetString(Locale::ERR_NO_SIMULATOR));
 		return;
 	}
 	if (m_deleste.getSavePath().isEmpty) {
@@ -491,8 +493,8 @@ Editor::Editor() :
 	m_gui(GUIStyle::Default),
 	m_headerGui(GUIStyle::Default)
 {
-	//GUI‰Šú‰»
-	//ƒwƒbƒ_[
+	//GUIåˆæœŸåŒ–
+	//ãƒ˜ãƒƒãƒ€ãƒ¼
 	{
 		WidgetStyle labelStyle;
 		labelStyle.width = 120;
@@ -537,9 +539,9 @@ Editor::Editor() :
 
 		m_headerGui.add(GUIHorizontalLine::Create());
 
-		m_headerGui.add(L"cancel", GUIButton::Create(L"ƒLƒƒƒ“ƒZƒ‹"));
+		m_headerGui.add(L"cancel", GUIButton::Create(Locale::GetString(Locale::UI_CANCEL)));
 		m_headerGui.button(L"cancel").style.margin.left = 130;
-		m_headerGui.addln(L"save", GUIButton::Create(L"•Û‘¶"));
+		m_headerGui.addln(L"save", GUIButton::Create(Locale::GetString(Locale::UI_SAVE)));
 
 		m_headerGui.style.showTitle = false;
 		m_headerGui.style.borderRadius = 0;
@@ -547,7 +549,7 @@ Editor::Editor() :
 		m_headerGui.setPos(Window::ClientRect().w - 400, 0);
 		m_headerGui.show(false);
 	}
-	//ƒƒjƒ…[
+	//ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 	{
 		WidgetStyle labelStyle;
 		labelStyle.width = 100;
@@ -555,53 +557,53 @@ Editor::Editor() :
 		WidgetStyle textFieldStyle;
 		textFieldStyle.width = 70;
 
-		m_gui.addln(GUIText::Create(L"[ƒtƒ@ƒCƒ‹]"));
-		m_gui.add(L"new-file", GUIButton::Create(L"V‹Kì¬"));
-		m_gui.add(L"open-file", GUIButton::Create(L"ŠJ‚­"));
-		m_gui.addln(L"save-file", GUIButton::Create(L"ã‘‚«•Û‘¶"));
-		m_gui.add(L"saveas-file", GUIButton::Create(L"–¼‘O‚ğ•t‚¯‚Ä•Û‘¶"));
-		m_gui.addln(L"edit-header", GUIButton::Create(L"ƒwƒbƒ_[•ÒW"));
-		m_gui.addln(L"run-simulator", GUIButton::Create(L"ƒVƒ~ƒ…ƒŒ[ƒ^[‚ÅÄ¶"));
+		m_gui.addln(GUIText::Create(Locale::GetString(Locale::UI_FILE)));
+		m_gui.add(L"new-file", GUIButton::Create(Locale::GetString(Locale::UI_NEW)));
+		m_gui.add(L"open-file", GUIButton::Create(Locale::GetString(Locale::UI_OPEN)));
+		m_gui.addln(L"save-file", GUIButton::Create(Locale::GetString(Locale::UI_OVERWRITE)));
+		m_gui.add(L"saveas-file", GUIButton::Create(Locale::GetString(Locale::UI_SAVEAS)));
+		m_gui.addln(L"edit-header", GUIButton::Create(Locale::GetString(Locale::UI_EDIT_HEADER)));
+		m_gui.addln(L"run-simulator", GUIButton::Create(Locale::GetString(Locale::UI_PLAY_SIMULATOR)));
 
 		m_gui.add(GUIHorizontalLine::Create());
 
-		m_gui.addln(GUIText::Create(L"[ƒOƒŠƒbƒh]"));
-		m_gui.add(GUIText::Create(L"ƒY[ƒ€", labelStyle));
+		m_gui.addln(GUIText::Create(Locale::GetString(Locale::UI_GRID)));
+		m_gui.add(GUIText::Create(Locale::GetString(Locale::UI_ZOOM), labelStyle));
 		m_gui.add(L"zoom", GUISlider::Create(0.2, 5.0, 1.0));
 		m_gui.addln(L"zoom-ratio", GUIText::Create(L"100%"));
-		m_gui.add(GUIText::Create(L"•ªŠ„”", labelStyle));
+		m_gui.add(GUIText::Create(Locale::GetString(Locale::UI_DIVISION_NUMBER), labelStyle));
 		m_gui.add(L"division-down", GUIButton::Create(L"<"));
 		m_gui.add(L"division", GUIText::Create(L"8"));
 		m_gui.addln(L"division-up", GUIButton::Create(L">"));
-		m_gui.add(GUIText::Create(L"î•ñ‚ğ•\¦‚·‚é", labelStyle));
+		m_gui.add(GUIText::Create(Locale::GetString(Locale::UI_SHOW_INFORMATION), labelStyle));
 		m_gui.addln(L"show-info", GUIToggleSwitch::Create(L"", L"", false));
 
 		m_gui.add(GUIHorizontalLine::Create());
 
-		m_gui.addln(GUIText::Create(L"[ƒm[ƒg]"));
-		m_gui.add(GUIText::Create(L"ƒ`ƒƒƒ“ƒlƒ‹", labelStyle));
+		m_gui.addln(GUIText::Create(Locale::GetString(Locale::UI_NOTE)));
+		m_gui.add(GUIText::Create(Locale::GetString(Locale::UI_CHANNEL), labelStyle));
 		m_gui.add(L"channel-down", GUIButton::Create(L"-"));
 		m_gui.add(L"channel", GUIText::Create(L"0"));
 		m_gui.addln(L"channel-up", GUIButton::Create(L"+"));
 
 		m_gui.add(GUIHorizontalLine::Create(1));
 
-		m_gui.addln(GUIText::Create(L"[Šg’£ƒm[ƒg]"));
-		m_gui.add(GUIText::Create(L"ƒeƒ“ƒ|•ÏX", labelStyle));
+		m_gui.addln(GUIText::Create(Locale::GetString(Locale::UI_EXTENSION_NOTE)));
+		m_gui.add(GUIText::Create(Locale::GetString(Locale::UI_CHANGE_TEMPO), labelStyle));
 		m_gui.addln(L"tempo", GUITextField::Create(none, textFieldStyle));
 		m_gui.textField(L"tempo").setText(L"120");
 
 		m_gui.add(GUIHorizontalLine::Create());
 
-		m_gui.addln(GUIText::Create(L"[¬ß]"));
-		m_gui.add(L"add-measure", GUIButton::Create(L"‘}“ü"));
-		m_gui.addln(L"remove-measure", GUIButton::Create(L"íœ"));
+		m_gui.addln(GUIText::Create(Locale::GetString(Locale::UI_MEASURE)));
+		m_gui.add(L"add-measure", GUIButton::Create(Locale::GetString(Locale::UI_INSERT)));
+		m_gui.addln(L"remove-measure", GUIButton::Create(Locale::GetString(Locale::UI_DELETE)));
 
-		m_gui.add(GUIText::Create(L"”q•ÏX", labelStyle));
+		m_gui.add(GUIText::Create(Locale::GetString(Locale::UI_CHANGE_MEASURE), labelStyle));
 		m_gui.add(L"measure-rhythm", GUITextField::Create(none, textFieldStyle));
 		m_gui.textField(L"measure-rhythm").setText(L"4/4");
-		m_gui.add(L"set-rhythm", GUIButton::Create(L"•ÏX"));
-		m_gui.addln(L"remove-rhythm", GUIButton::Create(L"íœ"));
+		m_gui.add(L"set-rhythm", GUIButton::Create(Locale::GetString(Locale::UI_CHANGE)));
+		m_gui.addln(L"remove-rhythm", GUIButton::Create(Locale::GetString(Locale::UI_DELETE)));
 
 		m_gui.add(GUIHorizontalLine::Create());
 
@@ -620,7 +622,7 @@ Editor::Editor() :
 
 void Editor::update() {
 
-	//GUIŠÖ˜A
+	//GUIé–¢é€£
 	if (m_gui.slider(L"zoom").hasChanged) {
 		changeZoomRatio();
 	}
@@ -711,7 +713,7 @@ void Editor::update() {
 		int musicLength = static_cast<int>(getMusic().lengthSec());
 		m_gui.text(L"music-time").text = Format(L"{}:{} / {}:{}"_fmt, currentTime / 60, Pad(currentTime % 60, { 2, L'0' }), musicLength / 60, Pad(musicLength % 60, { 2, L'0' }));
 
-		//TODO:ƒL[ƒVƒ‡[ƒgƒJƒbƒg
+		//TODO:ã‚­ãƒ¼ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆ
 		if (Input::KeyA.clicked) {
 			channelDown();
 		}
@@ -751,7 +753,7 @@ void Editor::update() {
 
 		NoteType currentNoteType = NoteType::Tap;
 
-		//ƒm[ƒg‘I‘ğ
+		//ãƒãƒ¼ãƒˆé¸æŠ
 		if (Input::KeyControl.pressed && Input::MouseL.clicked) {
 			currentNoteType = NoteType::Slide;
 		}
@@ -810,24 +812,24 @@ void Editor::update() {
 					double y = (*it)->BeginY;
 					int tick = -1;
 
-					//”q‚ğl—¶‚µ‚Ä”»’è‚·‚é
-					//(•ªŠ„ü‚ª¬ßŠJnü‚Ì‚İ?¬ß‚Ì’†ŠÔ:¬ßŠJnü-ƒOƒŠƒbƒh‚Ì‚‚³/2)ˆÈãA¬ßŠJnü‚Æ‘O‚Ì¬ß‚ÌÅŒã‚Ì•ªŠ„ü‚Ì’†ŠÔ–¢–
+					//æ‹å­ã‚’è€ƒæ…®ã—ã¦åˆ¤å®šã™ã‚‹
+					//(åˆ†å‰²ç·šãŒå°ç¯€é–‹å§‹ç·šã®ã¿?å°ç¯€ã®ä¸­é–“:å°ç¯€é–‹å§‹ç·š-ã‚°ãƒªãƒƒãƒ‰ã®é«˜ã•/2)ä»¥ä¸Šã€å°ç¯€é–‹å§‹ç·šã¨å‰ã®å°ç¯€ã®æœ€å¾Œã®åˆ†å‰²ç·šã®ä¸­é–“æœªæº€
 					if (y - (lineCount == 1 ? (y - (*it)->EndY) / 2 : gridHeightHalf) <= mousePos.y && mousePos.y < y + (it == getMeasures().begin() ? gridHeightHalf : ((*(it - 1))->LastLineY - y) / 2))
 						tick = 0;
 					y -= gridHeightHalf * 2;
 
-					//’†ŠÔ
-					//•ªŠ„ü‚ª¬ßŠJnü‚Ì‚İ‚Ìê‡AƒXƒLƒbƒv
-					//•ªŠ„ü-ƒOƒŠƒbƒh‚Ì‚‚³/2‚ÌˆÈãA•ªŠ„ü+ƒOƒŠƒbƒh‚Ì‚‚³/2–¢–‚Å”»’è
+					//ä¸­é–“
+					//åˆ†å‰²ç·šãŒå°ç¯€é–‹å§‹ç·šã®ã¿ã®å ´åˆã€ã‚¹ã‚­ãƒƒãƒ—
+					//åˆ†å‰²ç·š-ã‚°ãƒªãƒƒãƒ‰ã®é«˜ã•/2ã®ä»¥ä¸Šã€åˆ†å‰²ç·š+ã‚°ãƒªãƒƒãƒ‰ã®é«˜ã•/2æœªæº€ã§åˆ¤å®š
 					for (int i = 1; i < lineCount - 1; i++)
 					{
 						if (y - gridHeightHalf <= mousePos.y && mousePos.y < y + gridHeightHalf)
 							tick = 192 / (getDivision() / 4) * i;
 						y -= gridHeightHalf * 2;
 					}
-					//ÅŒã
-					//•ªŠ„ü‚ª¬ßŠJnü‚Ì‚İ‚Ìê‡AƒXƒLƒbƒv
-					//•ªŠ„ü‚Æ¬ßIü(Ÿ‚Ì¬ß‚ÌŠJnü)‚Ì’†ŠÔˆÈãA•ªŠ„ü+ƒOƒŠƒbƒh‚Ì‚‚³/2–¢–‚Å”»’è
+					//æœ€å¾Œ
+					//åˆ†å‰²ç·šãŒå°ç¯€é–‹å§‹ç·šã®ã¿ã®å ´åˆã€ã‚¹ã‚­ãƒƒãƒ—
+					//åˆ†å‰²ç·šã¨å°ç¯€çµ‚ç·š(æ¬¡ã®å°ç¯€ã®é–‹å§‹ç·š)ã®ä¸­é–“ä»¥ä¸Šã€åˆ†å‰²ç·š+ã‚°ãƒªãƒƒãƒ‰ã®é«˜ã•/2æœªæº€ã§åˆ¤å®š
 					if (lineCount != 1 && y - (y - (*it)->EndY) / 2 <= mousePos.y && mousePos.y < y + gridHeightHalf)
 						tick = 192 / (getDivision() / 4) * (lineCount - 1);
 
@@ -870,7 +872,7 @@ void Editor::draw() {
 		const Line laneLine(-0.5, 0, -0.5, Window::ClientRect().h);
 		//m_rect.draw(Color(30, 30, 30));
 
-		//ƒŒ[ƒ“
+		//ãƒ¬ãƒ¼ãƒ³
 		for (auto i = 0; i < m_laneCount; i++) {
 			laneLine.movedBy(i * m_LaneWidth + getLaneOffset(), 0).draw(Palette::White);
 		}
@@ -879,7 +881,7 @@ void Editor::draw() {
 
 		Graphics2D::SetTransform(scrollMatrix);
 
-		//¬ß
+		//å°ç¯€
 		double measureBeginY = 0;
 		for (auto& measure : getMeasures()) {
 			int lineCount = static_cast<int>(Ceil(getDivision() * measure->getLength()));
@@ -909,36 +911,36 @@ void Editor::draw() {
 
 		Graphics2D::SetTransform(scrollMatrix);
 
-		//¬ß”Ô†/”q
+		//å°ç¯€ç•ªå·/æ‹å­
 		for (size_t i = 0; i < getMeasures().size(); ++i) {
 			FontAsset(L"editor")(Pad(i, { 3, L'0' })).drawAt(divLine.begin.x - 35, getMeasures()[i]->BeginY);
 			if (getMeasures()[i]->Rhythm != nullptr)
 				FontAsset(L"editor")(getMeasures()[i]->Rhythm->toString()).drawAt(divLine.end.x + 40, getMeasures()[i]->BeginY);
 		}
 
-		//‘Ñ
+		//å¸¯
 		for (auto& note : m_playableNotes) {
 			note->drawRibbon();
 		}
 
-		//ƒm[ƒg
+		//ãƒãƒ¼ãƒˆ
 		for (auto& note : m_playableNotes) {
 			note->draw();
 		}
 
-		//ƒm[ƒgî•ñ
+		//ãƒãƒ¼ãƒˆæƒ…å ±
 		if (m_gui.toggleSwitch(L"show-info").isRight) {
 			for (auto& note : m_playableNotes) {
 				note->drawInfo();
 			}
 		}
 
-		//ƒeƒ“ƒ|•ÏX
+		//ãƒ†ãƒ³ãƒå¤‰æ›´
 		for (auto& note : m_changeTempos) {
 			note->draw();
 		}
 
-		//¬ß‘I‘ğ
+		//å°ç¯€é¸æŠ
 		Triangle(divLine.begin.x - 75, getMeasures()[m_selectedMeasure]->BeginY, 15, 90_deg).draw(Palette::Red);
 
 		Println(L"Notes:", m_playableNotes.size());
