@@ -32,21 +32,12 @@ namespace Locale {
 		Str_ GetLocaleString(uint32_t id) const;
 
 		/* singleton */
-		LocaleManager(const LocaleManager&) = delete;
-		LocaleManager& operator=(const LocaleManager&) = delete;
-		LocaleManager(LocaleManager&&) = delete;
-		LocaleManager& operator=(LocaleManager&&) = delete;
-
 		static LocaleManager& instance() {
 			static LocaleManager inst;
 			return inst;
 		}
 
 	private:
-		/* singleton */
-		LocaleManager() = default;
-		~LocaleManager() = default;
-
 		std::unordered_map<Str_, LocaleStringManager> m_locales;
 		LocaleStringManager *m_current = nullptr;
 
