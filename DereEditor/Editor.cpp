@@ -364,14 +364,14 @@ void Editor::openFile() {
 				for (auto it = beatmap.getErrorMessages().begin(); it != beatmap.getErrorMessages().begin() + 20; ++it) {
 					message.append(*it + L"\n");
 				}
-				message.append(L"(21個以上のエラーは省略しています。)\n");
+				message.append(Locale::GetString(Locale::MSG_OMIT_ERROR_OVER_21));
 			}
 			else {
 				for (auto& mes : beatmap.getErrorMessages()) {
 					message.append(mes + L"\n");
 				}
 			}
-			message.append(L"エラーを無視して読み込みますか？");
+			message.append(Locale::GetString(Locale::MSG_IGNORE_ERROR_CONFIRM));
 			if (MessageBox::Show(message, MessageBoxStyle::YesNo) == MessageBoxCommand::Yes) {
 				changeBeatmap(beatmap);
 			}
