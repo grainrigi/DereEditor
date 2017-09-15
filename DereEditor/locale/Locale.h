@@ -115,11 +115,7 @@ namespace Locale {
 		LocaleParseException(void);
 		LocaleParseException(const std::string &message);
 		LocaleParseException(int line, const std::string &message);
-
-		virtual const char *what() const override;
-
 	private:
-		std::string m_message;
 	};
 
 	class LocaleNotFoundException : public LocaleException

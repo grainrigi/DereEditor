@@ -152,7 +152,7 @@ namespace Locale
 	{
 	}
 	LocaleParseException::LocaleParseException(const std::string & message)
-		: m_message(message)
+		: LocaleException(message)
 	{
 	}
 	LocaleParseException::LocaleParseException(int line, const std::string &message)
@@ -162,11 +162,7 @@ namespace Locale
 		ss << "at Line " << line << ": ";
 		ss << message;
 
-		m_message = ss.str();
-	}
-	const char * LocaleParseException::what() const
-	{
-		return m_message.c_str();
+		LocaleException(ss.str());
 	}
 
 	void LocaleManager::LoadLocaleFromString(const Str_ &str)
