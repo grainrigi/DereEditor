@@ -118,6 +118,9 @@ namespace Locale {
 	//Get the string id from string name
 	uint32_t getStringID(const Str_ &key);
 
+	//Get the default string from id
+	Str_ getDefaultString(uint32_t id);
+
 	//Get the number of strings
 	int getRequiredEntryCount(void);
 }

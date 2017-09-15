@@ -168,6 +168,7 @@
     <ClCompile Include="GUITextureButton.cpp" />
     <ClCompile Include="locale\Locale.cpp" />
     <ClCompile Include="locale\LocaleTable.cpp" />
+    <ClCompile Include="locale\LocaleTableDefault.cpp" />
     <ClCompile Include="locale\StringUtil.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Measure.cpp" />

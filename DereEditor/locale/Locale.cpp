@@ -13,6 +13,15 @@ namespace Locale
 		else
 			return it->second;
 	}
+	
+	Str_ getDefaultString(uint32_t id)
+	{
+		auto it = def_dic.find(id);
+		if (it == std::end(def_dic))
+			throw LocaleNotFoundException("The specified id is not contained in the string table.");
+		else
+			return it->second;
+	}
 
 	int getRequiredEntryCount(void)
 	{
@@ -191,7 +200,7 @@ namespace Locale
 	Str_ LocaleManager::GetLocaleString(uint32_t id) const
 	{
 		if (m_current == nullptr)
-			throw LocaleException("no locale has been loaded");
+			return getDefaultString(id);
 
 		return m_current->GetLocaleString(id);
 	}
