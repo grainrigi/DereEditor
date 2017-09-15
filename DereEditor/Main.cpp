@@ -14,7 +14,7 @@ namespace
 		if (!r.isOpened())
 		{
 			MessageBox::Show(L"locale file could not be loaded.");
-			return false;
+			return true;
 		}
 
 		try {
