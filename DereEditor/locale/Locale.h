@@ -136,5 +136,11 @@ namespace Locale {
 
 	//Get the number of strings
 	int getRequiredEntryCount(void);
+
+	//abbreviation of LocaleManager::instance().GetLocaleString(id)
+	inline Str_ GetString(uint32_t id)
+	{
+		return LocaleManager::instance().GetLocaleString(id);
+	}
 }
 
