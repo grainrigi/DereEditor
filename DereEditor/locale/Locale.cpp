@@ -169,11 +169,6 @@ namespace Locale
 		return m_message.c_str();
 	}
 
-
-	LocaleManager::LocaleManager()
-	{
-	}
-
 	void LocaleManager::LoadLocaleFromString(const Str_ &str)
 	{
 		//Load locale
