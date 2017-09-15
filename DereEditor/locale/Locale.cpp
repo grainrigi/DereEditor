@@ -98,7 +98,7 @@ namespace Locale
 		//Read data
 		auto key = eqtok.Tokenize();
 		if (eqtok.isEOS()) //not a data line
-			return true;
+			return !tok.isEOS();
 		auto val = eqtok.Tokenize();
 
 		//Get the integer id
