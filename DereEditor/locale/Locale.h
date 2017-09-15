@@ -23,6 +23,8 @@ namespace Locale {
 		//Switch locale
 		//*Exceptions
 		//	*LocaleNotFoundException - the specified locale cannot be found.
+		//*Argument
+		//	*loc - the name of locale. If empty, the default locale will be used.
 		void ChangeLocale(const Str_ &loc);
 
 		//Get the locale specific string
@@ -42,6 +44,7 @@ namespace Locale {
 		LocaleStringManager *m_current = nullptr;
 
 		bool isNoLocale(void) const;
+		void useDefaultLocale(void);
 	};
 
 	//LocaleStringManager

@@ -184,6 +184,13 @@ namespace Locale
 
 	void LocaleManager::ChangeLocale(const Str_ & loc)
 	{
+		//If empty, use the default locale
+		if(loc.empty())
+		{
+			useDefaultLocale();
+			return;
+		}
+
 		auto it = m_locales.find(loc);
 
 		if (it == std::end(m_locales))
@@ -203,6 +210,11 @@ namespace Locale
 	bool LocaleManager::isNoLocale(void) const
 	{
 		return m_current == nullptr;
+	}
+
+	void LocaleManager::useDefaultLocale(void)
+	{
+		m_current = nullptr;
 	}
 
 
