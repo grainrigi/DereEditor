@@ -13,8 +13,6 @@ namespace Locale {
 	class LocaleManager
 	{
 	public:
-		LocaleManager();
-
 		//Load locale data
 		//	*If no locale data has been loaded,
 		//	 the loaded data is set to the default locale.
@@ -33,7 +31,22 @@ namespace Locale {
 		//	*LocaleNotFoundException - the specified id is not contained in this locale
 		Str_ GetLocaleString(uint32_t id) const;
 
+		/* singleton */
+		LocaleManager(const LocaleManager&) = delete;
+		LocaleManager& operator=(const LocaleManager&) = delete;
+		LocaleManager(LocaleManager&&) = delete;
+		LocaleManager& operator=(LocaleManager&&) = delete;
+
+		static LocaleManager& instance() {
+			static LocaleManager inst;
+			return inst;
+		}
+
 	private:
+		/* singleton */
+		LocaleManager() = default;
+		~LocaleManager() = default;
+
 		std::unordered_map<Str_, LocaleStringManager> m_locales;
 		LocaleStringManager *m_current = nullptr;
 
