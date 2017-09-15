@@ -52,6 +52,14 @@ namespace Locale {
 		LocaleStringManager(void);
 		LocaleStringManager(const Str_ &data);
 
+		/* Locale data syntax
+			*First line : locale name(empty value is not allowed)
+				If the value is empty, it is an error.
+			*Other lines : string pair
+				syntax: [STRING_NAME]=[STRING_VALUE]
+				white space and other space characters are not ignored
+			*If a line does not fit the syntax above, the line will be ignored.
+		*/
 		void LoadLocaleData(const Str_ &data);
 
 		Str_ GetLocaleName(void) const;
