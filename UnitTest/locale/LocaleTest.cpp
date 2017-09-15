@@ -90,11 +90,14 @@ UI_BUTTON_OPEN=開く
 		}
 
 		//Check if getting string from an empty manager fails
-		TEST_METHOD(LocaleManager_EmptyTest_Negative)
+		TEST_METHOD(LocaleManager_EmptyTest)
 		{
 			LocaleManager loc;
 
-			Assert::ExpectException<LocaleException>([&]() {loc.GetLocaleString(UI_BUTTON_OK); });
+			//test default values
+			Assert::AreEqual(L"OK", loc.GetLocaleString(UI_BUTTON_OK).c_str());
+			Assert::AreEqual(L"新規作成", loc.GetLocaleString(UI_BUTTON_NEW).c_str());
+			Assert::AreEqual(L"開く", loc.GetLocaleString(UI_BUTTON_OPEN).c_str());
 		}
 
 	};

@@ -50,5 +50,8 @@
     <ClCompile Include="..\DereEditor\locale\StringUtil.cpp">
       <Filter>ソース ファイル\locale</Filter>
     </ClCompile>
+    <ClCompile Include="locale\LocaleTableDefault.cpp">
+      <Filter>ソース ファイル\locale</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
