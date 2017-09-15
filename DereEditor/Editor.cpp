@@ -364,7 +364,7 @@ void Editor::openFile() {
 				for (auto it = beatmap.getErrorMessages().begin(); it != beatmap.getErrorMessages().begin() + 20; ++it) {
 					message.append(*it + L"\n");
 				}
-				message.append(Locale::GetString(Locale::MSG_OMIT_ERROR_OVER_21));
+				message.append(Locale::GetString(Locale::MSG_OMIT_ERROR_OVER_21) + L"\n");
 			}
 			else {
 				for (auto& mes : beatmap.getErrorMessages()) {

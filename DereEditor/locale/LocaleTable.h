@@ -45,7 +45,7 @@ namespace Locale
 		LOCALE_REG(MSG_DEL_MEASURE_CONFIRM, 20000, L"ノートが含まれています。小節を削除しますか？")
 		LOCALE_REG(MSG_SAVE_CONFIRM, 20001, L"譜面が変更されています。保存しますか？")
 		LOCALE_REG(MSG_OPENFILE_DELESTE_FILTER, 20002, L"Deleste ファイル (*.txt)")
-		LOCALE_REG(MSG_OMIT_ERROR_OVER_21, 20003, L"(21個以上のエラーは省略しています。)\n")
+		LOCALE_REG(MSG_OMIT_ERROR_OVER_21, 20003, L"(21個以上のエラーは省略しています。)")
 		LOCALE_REG(MSG_IGNORE_ERROR_CONFIRM, 20004, L"エラーを無視して読み込みますか？")
 
 	LOCALE_REG_END()
