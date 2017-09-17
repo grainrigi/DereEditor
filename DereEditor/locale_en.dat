@@ -1,0 +1,38 @@
+﻿ja
+//UI String
+UI_OK=OK
+UI_CANCEL=Cancel
+UI_NEW=New
+UI_OPEN=Open
+UI_SAVE=Save
+UI_FILE=[File]
+UI_OVERWRITE=Save
+UI_SAVEAS=Save As
+UI_EDIT_HEADER=Edit Header
+UI_PLAY_SIMULATOR=Play on the Simulator
+UI_GRID=[Grid]
+UI_ZOOM=Zoom
+UI_DIVISION_NUMBER=Div Count
+UI_SHOW_INFORMATION=Show Info
+UI_NOTE=[Note]
+UI_CHANNEL=Channel
+UI_EXTENSION_NOTE=[Extention Note]
+UI_CHANGE_TEMPO=Change Tempo
+UI_MEASURE=[Measure]
+UI_INSERT=Insert
+UI_DELETE=Delete
+UI_CHANGE_MEASURE=Meter
+UI_CHANGE=Change
+//Error String
+ERR_MEASURE_CANNOT_ADD=Cannot add a measure anymore.
+ERR_MEASURE_CANNOT_DEL_ALL=Cannot delete all the measures.
+ERR_ILLFORM_4_4=Input with the form of 4/4.
+ERR_MEASURE_SIZE_BELOW_0=Length of a measure must not be 0 or below.
+ERR_DENOM_LIMITATION=Only 4,8,16,32 or 64 can be used for the denominator.
+ERR_NO_SIMULATOR=The simulator does not exist.
+//Other Message String
+MSG_DEL_MEASURE_CONFIRM=One or more note(s) are included in this measure. Are you sure to delete?
+MSG_SAVE_CONFIRM=The score has been changed. Would you like to save?
+MSG_OPENFILE_DELESTE_FILTER=Deleste File (*.txt)
+MSG_OMIT_ERROR_OVER_21=Only first 20 errors are displayed and the others are omitted.
+MSG_IGNORE_ERROR_CONFIRM=Do you want to continue to load ignoring the error?

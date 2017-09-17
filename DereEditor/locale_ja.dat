@@ -1,0 +1,38 @@
+ja
+//UI String
+UI_OK=OK
+UI_CANCEL=キャンセル
+UI_NEW=新規
+UI_OPEN=開く
+UI_SAVE=保存
+UI_FILE=[ファイル]
+UI_OVERWRITE=上書き保存
+UI_SAVEAS=名前を付けて保存
+UI_EDIT_HEADER=ヘッダー編集
+UI_PLAY_SIMULATOR=シミュレーターで再生
+UI_GRID=[グリッド]
+UI_ZOOM=ズーム
+UI_DIVISION_NUMBER=分割数
+UI_SHOW_INFORMATION=情報を表示する
+UI_NOTE=[ノート]
+UI_CHANNEL=チャンネル
+UI_EXTENSION_NOTE=[拡張ノート]
+UI_CHANGE_TEMPO=テンポ変更
+UI_MEASURE=[小節]
+UI_INSERT=挿入
+UI_DELETE=削除
+UI_CHANGE_MEASURE=拍子変更
+UI_CHANGE=変更
+//Error String
+ERR_MEASURE_CANNOT_ADD=これ以上小節を追加出来ません。
+ERR_MEASURE_CANNOT_DEL_ALL=小節を全て削除することは出来ません。
+ERR_ILLFORM_4_4=4/4形式で入力してください
+ERR_MEASURE_SIZE_BELOW_0=小節の長さは0以下に設定出来ません。
+ERR_DENOM_LIMITATION=分母は4,8,16,32,64のみが使用出来ます。
+ERR_NO_SIMULATOR=シミュレーターが存在しません。
+//Other Message String
+MSG_DEL_MEASURE_CONFIRM=ノートが含まれています。小節を削除しますか？
+MSG_SAVE_CONFIRM=譜面が変更されています。保存しますか？
+MSG_OPENFILE_DELESTE_FILTER=Deleste ファイル (*.txt)
+MSG_OMIT_ERROR_OVER_21=(21個以上のエラーは省略しています。)
+MSG_IGNORE_ERROR_CONFIRM=エラーを無視して読み込みますか？
