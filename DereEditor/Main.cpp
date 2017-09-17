@@ -8,6 +8,9 @@ namespace
 	{
 		auto &locman = Locale::LocaleManager::instance();
 
+		if (filename.isEmpty)
+			return true;
+
 		//Load specified locale file
 		TextReader r(filename);
 
